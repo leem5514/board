@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 상세 조회</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div th:replace="common/header :: headerFragment"></div>
+
+    <div class="container">
+        <div class="page-header"><h3>회원 상세 조회</h3></div>
+
+        <table class="table">
+            <tr>
+                <td >id</td>
+                <td th:text="${author.id}"></td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td th:text="${author.name}"></td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td th:text="${author.email}"></td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td th:text="${author.password}"></td>
+            </tr>
+            <tr>
+                <td>role</td>
+                <td th:text="${author.role}"></td>
+            </tr>
+            <tr>
+                <td>작성글수</td>
+                <td th:text="${author.postCounts}"></td>
+            </tr>
+            <tr>
+                <td>가입일시</td>
+                <td th:text="${author.createdTime}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

@@ -15,8 +15,5 @@ public class AuthorReqDto {
     private String password;
     private Enum role;
 
-    public Author toEntity() {
-        Author author = new Author(this.id, this.name, this.email, this.password, (Role) this.role);
-        return author;
-    }
+
 }
