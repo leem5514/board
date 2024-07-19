@@ -1,40 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        #update-form{
+            display: none;
+        }
+    </style>
 </head>
-<body>   
-    <object style="width : 100%" data="../common/header.html" type="text/html"></object> 
+<body>
+    <div th:replace="common/header :: headerFragment"></div>
 
     <div class="container">
-        <div class="page-header"><h3>게시글 상세 목록</h3></div>
-        <input type="text"id='search'>
-        <button class="btn btn-primary" onclick="postApi()">조회</button>
+        <div class="page-header"><h3>게시글 상세 조회</h3></div>
         
         <table class="table">
-            <tr><td>id</td><td id="id"></td></tr>
-            <tr><td>title</td><td id="title"></td></tr>
-            <tr><td>contents</td><td id="contents"></td></tr>
-
+            <tr><td>id</td><td th:text="${post.id}"></td></tr>
+            <tr><td>title</td><td th:text="${post.title}"></td></tr>
+            <tr><td>contents</td><td style="white-space: pre-wrap; word-break: break-all" th:text="${post.content}"></td></tr>
+            <tr><td>작성자</td><td th:text="${post.author_email}"></td></tr>
+            <tr><td>등록일</td><td th:text="${post.createdTime}"></td></tr>
+            <tr><td>수정일</td><td th:text="${post.updatedTime}"></td></tr>
         </table>
+
+        <div class="float-end">
+            <button onclick="showUpdateForm()" class="btn btn-primary">수정</button>
+            <a th:href="@{/post/delete/{id}(id = ${post.id})}" class="btn btn-primary">삭제</a>
+        </div>
+        <br>
+
+        <div id="update-form" class="mt-4">
+            <form th:action="@{/post/update/{id}(id = ${post.id})}" method="post">
+
+                <div class="form-group ">
+                    <label for="title">제목</label>
+                    <input type="text" class = "form-control" id="title" name="title" th:value="${post.title}">
+                </div>
+
+                <div class="form-group">
+                    <label for="content">내용</label><br>
+                    <textarea name="content" id = "content" class = "form-control" rows="10"  maxlength="800" th:text="${post.content}"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <button type="sumbit" class="btn btn-secondary">수정완료</button>
+                </div>
+
+            </form>
+        </div>
+
     </div>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-        
-        async function postApi() {
-            let search = document.getElementById("search").value;
-            const response1 = await axios.get("http://localhost:8081/post/detail/"+search);
-                const arr = response1.data;
-                
-                document.getElementById('id').innerHTML = arr.id;
-                document.getElementById('title').innerHTML = arr.title;
-                document.getElementById('contents').innerHTML = arr.contents;
-        } 
-        postApi();    
-    </script>
+<script>
+    function showUpdateForm() {
+        document.getElementById('update-form').style.display = 'block';
+    }
+</script>
 </body>
 </html>

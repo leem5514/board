@@ -2,6 +2,7 @@ package com.beyond.board.author.domain;
 
 import com.beyond.board.author.dto.AuthorDetailResDto;
 import com.beyond.board.author.dto.AuthorListResDto;
+import com.beyond.board.author.dto.AuthorUpdateDto;
 import com.beyond.board.common.BaseTimeEntity;
 import com.beyond.board.post.domain.Post;
 import lombok.*;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -34,8 +36,9 @@ public class Author extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @OneToMany(mappedBy = "author")
+    // 일반적으로 부모님엔티티(개작 엔티티에) 영향을 끼칠 수 있는 엔티티())
+    // CascadeType = ALL 을 걸음으로서 주체(Author) 삭제 시 -> board 도 함께 삭제 / CASCADE.PERSIST
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Post> posts;
 
 
@@ -58,5 +61,8 @@ public class Author extends BaseTimeEntity {
         return authorDetailResDto;
     }
 
-
+    public void updateAuthor(AuthorUpdateDto dto) {
+        this.name = dto.getName();
+        this.password = dto.getPassword();
+    }
 }

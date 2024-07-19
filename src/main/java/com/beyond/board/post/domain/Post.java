@@ -4,6 +4,7 @@ import com.beyond.board.author.domain.Author;
 import com.beyond.board.common.BaseTimeEntity;
 import com.beyond.board.post.dto.PostDetailResDto;
 import com.beyond.board.post.dto.PostListResDto;
+import com.beyond.board.post.dto.PostUpdateDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,6 +29,7 @@ public class Post extends BaseTimeEntity {
     @Column(length = 3000)
     private String content;
 
+    // 연관관계에 주인은 FK가 있는
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
@@ -44,5 +46,10 @@ public class Post extends BaseTimeEntity {
 
     public PostDetailResDto detailFromEntity() {
         return PostDetailResDto.builder().id(this.id).title(this.title).content(this.content).author_email(this.author.getEmail()).createdTime(this.getCreatedTime()).updatedTime(this.getUpdateTime()).build();
+    }
+
+    public void updatePost(PostUpdateDto dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
     }
 }

@@ -8,6 +8,7 @@ import com.beyond.board.post.domain.Post;
 import com.beyond.board.post.dto.PostDetailResDto;
 import com.beyond.board.post.dto.PostListResDto;
 import com.beyond.board.post.dto.PostSaveReqDto;
+import com.beyond.board.post.dto.PostUpdateDto;
 import com.beyond.board.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,9 @@ public class PostService {
     }
 
     public List<PostListResDto> postList() {
-        List<Post> postList = postRepository.findAll();
+//        List<Post> postList = postRepository.findAll();
+//        List<Post> postList = postRepository.findAllLeftJoin(); -> N+1 발생
+        List<Post> postList = postRepository.findAllFetch();
         List<PostListResDto> PostListResDtos = new ArrayList<>();
         for(Post p : postList) {
             PostListResDtos.add(p.listFromEntity());
@@ -50,9 +53,18 @@ public class PostService {
     }
     public PostDetailResDto postDetail(Long id) {
         Post post = postRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Post not found"));
-
         return post.detailFromEntity();
     }
 
+    @Transactional
+    public void deletePost(Long id) {
+        postRepository.deleteById(id);
+    }
+    @Transactional
+    public Post updatePost(Long id, PostUpdateDto dto) {
+        Post post = postRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Post not found"));
+        post.updatePost(dto);
+        return postRepository.save(post);
+    }
 
 }

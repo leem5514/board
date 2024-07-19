@@ -45,5 +45,18 @@ public class AuthorController {
         authorService.authorCreate(dto);
         return "redirect:/";
     }
+    @GetMapping("author/delete/{id}")
+    public String authorDelete(@PathVariable Long id,Model model) {
+        authorService.delete(id);
+        return "redirect:/author/list";
+    }
+
+    @PostMapping("author/update/{id}")
+    public String authorUpdate(@PathVariable Long id, @ModelAttribute AuthorUpdateDto authorUpdateDto, Model model) {
+        model.addAttribute("author", authorService.update(id, authorUpdateDto));
+        return "redirect:/author/detail/" + id;
+    }
+
+
 
 }
