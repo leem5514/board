@@ -6,4 +6,7 @@ import lombok.Data;
 public class PostUpdateDto {
     private String title;
     private String content;
+
+    private String appointment;
+    private String appointmentTime;
 }

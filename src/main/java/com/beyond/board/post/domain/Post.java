@@ -5,6 +5,7 @@ import com.beyond.board.common.BaseTimeEntity;
 import com.beyond.board.post.dto.PostDetailResDto;
 import com.beyond.board.post.dto.PostListResDto;
 import com.beyond.board.post.dto.PostUpdateDto;
+import com.beyond.board.post.service.PostScheduler;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Builder
 @Entity
@@ -39,6 +41,10 @@ public class Post extends BaseTimeEntity {
     @UpdateTimestamp
     private LocalDateTime updateTime;
 
+    private String appointment;
+
+    private LocalDateTime appointmentTime;
+
     public PostListResDto listFromEntity() {
 //        return PostListResDto.builder().id(this.id).title(this.title).author(this.author).build();
         return PostListResDto.builder().id(this.id).title(this.title).author_email(this.author.getEmail()).build();
@@ -51,5 +57,9 @@ public class Post extends BaseTimeEntity {
     public void updatePost(PostUpdateDto dto) {
         this.title = dto.getTitle();
         this.content = dto.getContent();
+    }
+
+    public void updateAppointment(String yn) {
+        this.appointment = yn;
     }
 }

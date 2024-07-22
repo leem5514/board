@@ -6,9 +6,14 @@ import com.beyond.board.post.dto.PostSaveReqDto;
 import com.beyond.board.post.dto.PostUpdateDto;
 import com.beyond.board.post.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -24,10 +29,17 @@ public class PostController {
     }
 
     @GetMapping("/post/list")
-    public String postList(Model model) {
-        model.addAttribute("postList", postService.postList());
+    public String postList(Model model, @PageableDefault(size = 5, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        model.addAttribute("postList", postService.postList(pageable));
         return "post/post_list";
     }
+    @GetMapping("post/list/page")
+    @ResponseBody
+    //pageAble 요청 방법 : localhost:8080/post/list?size=10&page
+    public Page<PostListResDto> postListPage(@PageableDefault(size = 5, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable ) {
+        return postService.postListPage(pageable);
+    }
+
 
     @GetMapping("post/create")
     public String postRegister() {
@@ -50,6 +62,13 @@ public class PostController {
         model.addAttribute("post", postService.updatePost(id, dto));
         return "redirect:/post/detail/" + id;
     }
+//    @GetMapping("post/list/page")
+//    @ResponseBody
+//    //pageAble 요청 방법 : localhost:8080/post/list?size=10&page
+//    public Page<PostListResDto> postListPage(@PageableDefault(size = 5, sort = "createdTime", direction = Sort.Direction.DESC) Pageable pageable ) {
+//        return postService.postListPage(pageable);
+//    }
+
 
     @GetMapping("post/delete/{id}")
     public String postDelete(@PathVariable Long id,Model model) {
