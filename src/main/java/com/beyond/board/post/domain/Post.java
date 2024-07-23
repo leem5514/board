@@ -5,7 +5,7 @@ import com.beyond.board.common.BaseTimeEntity;
 import com.beyond.board.post.dto.PostDetailResDto;
 import com.beyond.board.post.dto.PostListResDto;
 import com.beyond.board.post.dto.PostUpdateDto;
-import com.beyond.board.post.service.PostScheduler;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

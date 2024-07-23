@@ -17,7 +17,7 @@ public class AuthorSaveReqDto {
     private String name;
     private String email;
     private String password;
-    private List<Post> posts;
+    //private List<Post> posts;
     private Role role; // 사용자가 String 요청해도 Role 클래스 자동 형변환
 
     public Author toEntity() {

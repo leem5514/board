@@ -2,6 +2,7 @@ package com.beyond.board.author.controller;
 
 import com.beyond.board.author.dto.*;
 import com.beyond.board.author.service.AuthorService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@Slf4j
 //@RestController
 public class AuthorController {
 
@@ -32,6 +34,8 @@ public class AuthorController {
     }
     @GetMapping("/author/detail/{id}")
     public String AuthorDetailResDto(@PathVariable Long id, Model model) {
+//        log.info("get요청, parameter은 " + id);
+//        log.info("method명 : authorDetail");
         model.addAttribute("author", authorService.authorDetail(id));
         return "author/author_detail";
     }

@@ -31,6 +31,9 @@ public class AuthorService {
         if (authorRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new IllegalArgumentException(("이미 존재하는 email 입니다."));
         }
+        if (dto.getPassword().length() < 8) {
+            throw new IllegalArgumentException(("비밀번호 길이가 짧습니다."));
+        }
         Author author = dto.toEntity();
         // CASCADE persist TEST, REMOVE 테스트는 회원삭제로 대체
         author.getPosts().add(Post.builder().title("가입인사").author(author).content("안녕하세요 "+ dto.getName() +"입니다.").build());
