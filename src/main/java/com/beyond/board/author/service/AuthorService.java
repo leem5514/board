@@ -8,6 +8,7 @@ import com.beyond.board.author.dto.AuthorUpdateDto;
 import com.beyond.board.author.repository.AuthorRepository;
 import com.beyond.board.post.domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,12 @@ import java.util.Optional;
 public class AuthorService {
     @Autowired
     private AuthorRepository authorRepository;
-    public AuthorService(AuthorRepository authorRepository) {
+
+    private final PasswordEncoder passwordEncoder;
+
+
+    public AuthorService(PasswordEncoder passwordEncoder, AuthorRepository authorRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.authorRepository = authorRepository;
     }
 
@@ -34,7 +40,7 @@ public class AuthorService {
         if (dto.getPassword().length() < 8) {
             throw new IllegalArgumentException(("비밀번호 길이가 짧습니다."));
         }
-        Author author = dto.toEntity();
+        Author author = dto.toEntity(passwordEncoder.encode(dto.getPassword()));
         // CASCADE persist TEST, REMOVE 테스트는 회원삭제로 대체
         author.getPosts().add(Post.builder().title("가입인사").author(author).content("안녕하세요 "+ dto.getName() +"입니다.").build());
         Author savedAuthor = authorRepository.save(author);

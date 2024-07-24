@@ -6,6 +6,8 @@ import com.beyond.board.post.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +22,10 @@ public class AuthorSaveReqDto {
     //private List<Post> posts;
     private Role role; // 사용자가 String 요청해도 Role 클래스 자동 형변환
 
-    public Author toEntity() {
+
+    public Author toEntity(String encodedPassword) {
         Author author = Author.builder()
-                .password(this.password)
+                .password(encodedPassword)
                 .name(this.name)
                 .email(this.email)
                 .posts(new ArrayList<>())
